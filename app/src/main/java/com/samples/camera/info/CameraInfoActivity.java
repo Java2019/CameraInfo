@@ -1,6 +1,6 @@
 package com.samples.camera.info;
 
-import android.hardware.camera2.*;
+import android.hardware.Camera;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -13,17 +13,19 @@ public class CameraInfoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_camera_info);
 
         TextView text = (TextView)findViewById(R.id.text);
+        Camera camera = Camera.open();
+        Camera.Parameters params = camera.getParameters();
 
-        CameraManager manager = (CameraManager)getSystemService(CAMERA_SERVICE);
-        try {
-            String[] strings = manager.getCameraIdList();
-            for (String cameraID:strings){
-                CameraCharacteristics characteristics = manager.getCameraCharacteristics(cameraID);
-                text.append("Antibanding:\t" + characteristics.get(CameraCharacteristics.CONTROL_AE_AVAILABLE_ANTIBANDING_MODES));
-            }
-        } catch (CameraAccessException e) {
-            e.printStackTrace();
-        }
-
+        text.append("Antibanding:\t" + params.getAntibanding());
+        text.append("\nColor effect:\t" + params.getColorEffect());
+        text.append("\nFlash mode:\t" + params.getFlashMode());
+        text.append("\nFocus mode:\t" + params.getFocusMode());
+        text.append("\nPicture format:\t" + params.getPictureFormat());
+        text.append("\nPreview format:\t" + params.getPreviewFormat());
+        text.append("\nPreview frame rate:\t" +
+                params.getPreviewFrameRate());
+        text.append("\nScene mode:\t" + params.getSceneMode());
+        text.append("\nWhite balance:\t" + params.getWhiteBalance());
+        camera.release();
     }
 }
