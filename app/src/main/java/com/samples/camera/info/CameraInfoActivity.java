@@ -17,10 +17,9 @@ public class CameraInfoActivity extends AppCompatActivity {
         CameraManager manager = (CameraManager)getSystemService(CAMERA_SERVICE);
         try {
             String[] strings = manager.getCameraIdList();
-            for (int i = 0; i < strings.length; i++){
-                String s = strings[i];
-                manager.getCameraCharacteristics(s);
-
+            for (String cameraID:strings){
+                CameraCharacteristics characteristics = manager.getCameraCharacteristics(cameraID);
+                text.append("Antibanding:\t" + characteristics.get(CameraCharacteristics.CONTROL_AE_AVAILABLE_ANTIBANDING_MODES));
             }
         } catch (CameraAccessException e) {
             e.printStackTrace();
